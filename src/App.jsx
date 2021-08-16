@@ -1,49 +1,51 @@
-import { useEffect } from "react";
-import { RiContactsBook2Fill, RiContactsFill } from "react-icons/ri";
-import Section from "./components/Section/Section";
-import Container from "./components/Container/Container";
-import ContactForm from "./components/ContactForm/ContactForm";
-import ContactList from "./components/ContactList/ContactList";
-import Filter from "./components/Filter/Filter";
-import { useDispatch, useSelector } from "react-redux";
-import { contactsOperations, contactsSelectors } from "redux/contacts";
-import { Loader } from "components/Loader/Loader";
+import { lazy, Suspense, useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
+import AppBar from "components/AppBar/AppBar";
+
+const HomePage = lazy(() =>
+  import("./pages/HomePage/HomePage" /* webpackChunkName: "HomePage" */)
+);
+
+const ContactsPage = lazy(() =>
+  import(
+    "./pages/ContactsPage/ContactsPage" /* webpackChunkName: "ContactsPage" */
+  )
+);
+
+const RegisterPage = lazy(() =>
+  import(
+    "./pages/RegisterPage/RegisterPage" /* webpackChunkName: "RegisterPage" */
+  )
+);
+
+const LoginPage = lazy(() =>
+  import("./pages/LoginPage/LoginPage" /* webpackChunkName: "LoginPage" */)
+);
 
 const App = () => {
-  const contacts = useSelector(contactsSelectors.getContacts);
-  const isLoading = useSelector(contactsSelectors.getIsLoading);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(contactsOperations.fetchContacts());
-  }, [dispatch]);
-
   return (
     <>
-      <Section>
-        <Container>
-          <h1>
-            <RiContactsBook2Fill />
-            Phonebook
-          </h1>
+      <AppBar />
 
-          <ContactForm />
+      <Suspense fallback="Loading...">
+        <Switch>
+          <Route path={"/"} exact>
+            <HomePage />
+          </Route>
 
-          {contacts.length > 0 && (
-            <>
-              <h2>
-                <RiContactsFill />
-                Contacts
-              </h2>
+          <Route path={"/contacts"}>
+            <ContactsPage />
+          </Route>
 
-              <Filter />
+          <Route path={"/register"}>
+            <RegisterPage />
+          </Route>
 
-              <ContactList />
-            </>
-          )}
-        </Container>
-      </Section>
-      <Loader loading={isLoading} />
+          <Route path={"/login"}>
+            <LoginPage />
+          </Route>
+        </Switch>
+      </Suspense>
     </>
   );
 };
