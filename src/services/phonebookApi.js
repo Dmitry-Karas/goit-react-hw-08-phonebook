@@ -1,18 +1,16 @@
 import axios from "axios";
 
-// axios.defaults.baseURL = "https://61156ec88f38520017a384ea.mockapi.io";
 axios.defaults.baseURL = "https://connections-api.herokuapp.com";
 
-const token = {
-  set(token) {
-    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  },
-  unset() {
-    axios.defaults.headers.common.Authorization = "";
-  },
-};
-
 export class PhonebookAPI {
+  static setToken(token) {
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }
+
+  static unsetToken() {
+    axios.defaults.headers.common.Authorization = "";
+  }
+
   static async fetchContacts() {
     const { data } = await axios.get("/contacts");
 
@@ -32,15 +30,22 @@ export class PhonebookAPI {
   static async register(credentials) {
     const { data } = await axios.post("/users/signup", credentials);
 
-    token.set(data.token);
+    this.setToken(data.token);
 
     return data;
   }
 
-  static async login(credentials) {
+  static async logIn(credentials) {
     const { data } = await axios.post("/users/login", credentials);
-    token.set(data.token);
+
+    this.setToken(data.token);
 
     return data;
+  }
+
+  static async logOut(token) {
+    await axios.post("/users/logout");
+
+    this.unsetToken();
   }
 }
