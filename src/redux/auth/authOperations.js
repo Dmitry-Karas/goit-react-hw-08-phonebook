@@ -11,7 +11,11 @@ export const register = createAsyncThunk(
 );
 
 export const logIn = createAsyncThunk("auth/login", async (credentials) => {
-  const data = await PhonebookAPI.login(credentials);
+  const data = await PhonebookAPI.logIn(credentials);
 
   return data;
+});
+
+export const logOut = createAsyncThunk("auth/logout", async () => {
+  await PhonebookAPI.logOut();
 });
