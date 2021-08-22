@@ -13,6 +13,10 @@ export const Item = styled.li`
   border-bottom: 1px solid rosybrown;
   text-transform: capitalize;
 
+  @media screen and (max-width: 767px) {
+    font-size: 14px;
+  }
+
   & span {
     display: inline-flex;
     align-items: center;
@@ -43,7 +47,7 @@ export const Button = styled.button`
   cursor: pointer;
 
   background-color: transparent;
-  transition: all 250ms ease-in-out;
+  transition: all 250ms ease;
 
   &:hover {
     color: var(--color-accent);

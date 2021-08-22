@@ -1,7 +1,7 @@
 import styled from "@emotion/styled/macro";
 
 export const Wrapper = styled.section`
-  padding: 40px 0;
+  padding: 60px 0;
 `;
 export const Title = styled.h2`
   display: flex;

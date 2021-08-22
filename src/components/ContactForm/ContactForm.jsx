@@ -2,6 +2,8 @@ import Swal from "sweetalert2";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FiUser, FiPhone, FiUserPlus } from "react-icons/fi";
+import { contactsOperations, contactsSelectors } from "redux/contacts";
 import {
   StyledForm,
   InputContainer,
@@ -9,8 +11,6 @@ import {
   Label,
   Button,
 } from "./ContactForm.styled";
-import { FiUser, FiPhone, FiUserPlus } from "react-icons/fi";
-import { contactsOperations, contactsSelectors } from "redux/contacts";
 
 const ContactForm = () => {
   const [name, setName] = useState("");
@@ -78,7 +78,7 @@ const ContactForm = () => {
 
     if (existedContact) return;
 
-    dispatch(contactsOperations.addContact({ /*id: nanoid(),*/ name, number }));
+    dispatch(contactsOperations.addContact({ name, number }));
 
     setName("");
     setNumber("");

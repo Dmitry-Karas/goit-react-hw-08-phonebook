@@ -43,9 +43,17 @@ export class PhonebookAPI {
     return data;
   }
 
-  static async logOut(token) {
+  static async logOut() {
     await axios.post("/users/logout");
 
     this.unsetToken();
+  }
+
+  static async getCurrentUser(token) {
+    this.setToken(token);
+
+    const { data } = await axios.get("/users/current");
+
+    return data;
   }
 }

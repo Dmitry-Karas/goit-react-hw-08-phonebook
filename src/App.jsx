@@ -1,6 +1,13 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, useLocation } from "react-router-dom";
 import AppBar from "components/AppBar/AppBar";
+import { useDispatch, useSelector } from "react-redux";
+import { authOperations, authSelectors } from "redux/auth";
+import PrivateRoute from "components/PrivateRoute";
+import PublicRoute from "components/PublicRoute";
+import { Loader } from "components/Loader/Loader";
+import { contactsSelectors } from "redux/contacts";
+import { animated, useTransition } from "react-spring";
 
 const HomePage = lazy(() =>
   import("./pages/HomePage/HomePage" /* webpackChunkName: "HomePage" */)
@@ -23,29 +30,77 @@ const LoginPage = lazy(() =>
 );
 
 const App = () => {
+  const isRefreshing = useSelector(authSelectors.getIsRefreshing);
+  const isLoading = useSelector(contactsSelectors.getIsLoading);
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  const transitions = useTransition(location, {
+    from: {
+      // opacity: 0,
+      transform: "translate3d(100%,0,0)",
+    },
+    enter: {
+      // opacity: 1,
+      transform: "translate3d(0%,0,0)",
+    },
+    leave: {
+      // opacity: 0,
+      transform: "translate3d(-100%,0,0)",
+    },
+  });
+
+  useEffect(() => {
+    dispatch(authOperations.getCurrentUser());
+  }, [dispatch]);
+
   return (
     <>
       <AppBar />
 
-      <Suspense fallback="Loading...">
-        <Switch>
-          <Route path={"/"} exact>
-            <HomePage />
-          </Route>
+      {isRefreshing ? (
+        <Loader />
+      ) : (
+        transitions((props, item) => (
+          <Suspense fallback={<Loader />}>
+            <animated.div style={props}>
+              <div style={{ position: "absolute", width: "100%" }}>
+                <Switch location={item}>
+                  <PublicRoute
+                    path={"/"}
+                    exact
+                    restricted
+                    redirectTo="/contacts"
+                  >
+                    <HomePage />
+                  </PublicRoute>
 
-          <Route path={"/contacts"}>
-            <ContactsPage />
-          </Route>
+                  <PublicRoute
+                    path={"/register"}
+                    restricted
+                    redirectTo="/contacts"
+                  >
+                    <RegisterPage />
+                  </PublicRoute>
 
-          <Route path={"/register"}>
-            <RegisterPage />
-          </Route>
+                  <PublicRoute
+                    path={"/login"}
+                    restricted
+                    redirectTo="/contacts"
+                  >
+                    <LoginPage />
+                  </PublicRoute>
 
-          <Route path={"/login"}>
-            <LoginPage />
-          </Route>
-        </Switch>
-      </Suspense>
+                  <PrivateRoute path={"/contacts"} redirectTo="/login">
+                    <ContactsPage />
+                  </PrivateRoute>
+                </Switch>
+              </div>
+            </animated.div>
+            <Loader loading={isLoading} />
+          </Suspense>
+        ))
+      )}
     </>
   );
 };

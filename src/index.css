@@ -1,14 +1,17 @@
 @import "modern-normalize/modern-normalize.css";
 
 :root {
-  --color-accent: rosybrown;
+  --color-accent: #bc8f8f;
   --color-bg: #f3f0e9;
   --color-dark: #3c3c3c;
-  --color-light: tan;
+  --color-light: #d2b48c;
 }
-
+* {
+  /* outline: 1px solid red; */
+}
 body {
   font-family: "Red Hat Text", sans-serif;
+  font-family: "Roboto", sans-serif;
 
   background-color: floralwhite;
   background-image: url("./images/bg.jpg");
@@ -40,4 +43,49 @@ h5,
 h6,
 p {
   margin: 0;
+}
+
+.colored-toast.swal2-icon-success {
+  background-color: #a5dc86 !important;
+}
+
+.colored-toast.swal2-icon-error {
+  background-color: #f27474 !important;
+}
+
+.colored-toast.swal2-icon-warning {
+  background-color: #ffd561 !important;
+}
+
+.colored-toast.swal2-icon-info {
+  background-color: #3fc3ee !important;
+}
+
+.colored-toast.swal2-icon-question {
+  background-color: #87adbd !important;
+}
+
+.colored-toast .swal2-title {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+
+  font-size: 24px !important;
+  color: white;
+}
+
+.colored-toast .swal2-close {
+  color: white;
+}
+
+.colored-toast .swal2-content {
+  color: white;
+}
+
+.colored-toast .swal2-html-container {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+
+  font-weight: 500 !important;
+  font-size: 20px !important;
+  color: #2c2c2c;
 }

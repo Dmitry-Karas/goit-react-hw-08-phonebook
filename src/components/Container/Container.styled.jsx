@@ -1,7 +1,7 @@
 import styled from "@emotion/styled/macro";
 
 export const StyledContainer = styled.div`
-  width: 800px;
+  max-width: 1024px;
   margin: 0 auto;
   padding: 30px;
   border-radius: 5px;
@@ -9,26 +9,11 @@ export const StyledContainer = styled.div`
 
   background-color: var(--color-bg);
 
-  & h1 {
-    font-size: 40px;
-    margin-bottom: 40px;
+  @media screen and (max-width: 767px) {
+    max-width: 480px;
   }
 
-  & h2 {
-    font-size: 28px;
-    margin-bottom: 60px;
-  }
-
-  & h1,
-  h2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    color: var(--color-dark);
-
-    & svg {
-      margin-right: 10px;
-    }
+  @media screen and (min-width: 768px) {
+    max-width: 720px;
   }
 `;

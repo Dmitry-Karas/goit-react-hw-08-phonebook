@@ -1,11 +1,30 @@
-import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { authSelectors } from "redux/auth";
+import { SiteNavLink } from "./SiteNav.styled";
 
 const SiteNav = () => {
+  const isLoggedIn = useSelector(authSelectors.getIsLoggedIn);
+  const location = useLocation();
+
+  const handleNavLinkClick = (e) => {
+    const isCurrentPath = e.target.getAttribute("href") === location.pathname;
+
+    if (isCurrentPath) e.preventDefault();
+  };
+
   return (
-    <>
-      <NavLink to={"/home"}>home</NavLink>
-      <NavLink to={"/contacts"}>contacts</NavLink>
-    </>
+    <nav>
+      {isLoggedIn ? (
+        <SiteNavLink to={"/contacts"} onClick={handleNavLinkClick}>
+          Contacts
+        </SiteNavLink>
+      ) : (
+        <SiteNavLink to={"/"} onClick={handleNavLinkClick}>
+          Home
+        </SiteNavLink>
+      )}
+    </nav>
   );
 };
 

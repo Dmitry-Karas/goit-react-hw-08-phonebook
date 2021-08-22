@@ -6,12 +6,12 @@ import Section from "components/Section/Section";
 import React, { useEffect } from "react";
 import { RiContactsBook2Fill, RiContactsFill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "react-spinners/PuffLoader";
 import { contactsOperations, contactsSelectors } from "redux/contacts";
+import { TitleH2 } from "./ContactsPage.styled";
+import { TitleH1 } from "./ContactsPage.styled";
 
 const ContactsPage = () => {
   const contacts = useSelector(contactsSelectors.getContacts);
-  const isLoading = useSelector(contactsSelectors.getIsLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,19 +22,19 @@ const ContactsPage = () => {
     <>
       <Section>
         <Container>
-          <h1>
+          <TitleH1>
             <RiContactsBook2Fill />
             Phonebook
-          </h1>
+          </TitleH1>
 
           <ContactForm />
 
           {contacts.length > 0 && (
             <>
-              <h2>
+              <TitleH2>
                 <RiContactsFill />
                 Contacts
-              </h2>
+              </TitleH2>
 
               <Filter />
 
@@ -43,7 +43,6 @@ const ContactsPage = () => {
           )}
         </Container>
       </Section>
-      <Loader loading={isLoading} />
     </>
   );
 };

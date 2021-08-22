@@ -1,7 +1,7 @@
 import styled from "@emotion/styled/macro";
 
 export const StyledForm = styled.form`
-  width: 450px;
+  max-width: 450px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 40px;
