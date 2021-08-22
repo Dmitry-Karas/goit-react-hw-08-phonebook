@@ -8,6 +8,7 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.h1`
+  max-width: 300px;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -26,7 +27,7 @@ export const Title = styled.h1`
 export const Text = styled.p`
   font-size: 22px;
   line-height: 1.8;
-  /* text-align: center; */
+  text-align: center;
   color: var(--color-dark);
 
   @media screen and (max-width: 768px) {
