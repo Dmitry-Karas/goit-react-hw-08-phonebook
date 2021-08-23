@@ -6,7 +6,6 @@ const initialState = {
   token: null,
   isLoggedIn: null,
   isRefreshing: false,
-  isLoading: false,
 };
 
 const authSlice = createSlice({
@@ -14,30 +13,11 @@ const authSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(authOperations.logOut.fulfilled, (state) => {
-        state.user = initialState.user;
-        state.token = initialState.token;
-        state.isLoggedIn = initialState.isLoggedIn;
-      })
       .addCase(authOperations.getCurrentUser.pending, (state) => {
         state.isRefreshing = true;
       })
       .addCase(authOperations.getCurrentUser.fulfilled, (state, action) => {
         state.user = action.payload;
-        state.isLoggedIn = true;
-        state.isRefreshing = false;
-      })
-      .addCase(authOperations.getCurrentUser.rejected, (state) => {
-        state.user = initialState.user;
-        state.token = initialState.token;
-        state.isLoggedIn = initialState.isLoggedIn;
-        state.isRefreshing = false;
-      })
-      .addCase(authOperations.logIn.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(authOperations.logIn.rejected, (state) => {
-        state.isLoading = false;
       })
       .addMatcher(
         isAnyOf(
@@ -47,7 +27,36 @@ const authSlice = createSlice({
         (state, action) => {
           state.user = action.payload.user;
           state.token = action.payload.token;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          authOperations.logOut.fulfilled,
+          authOperations.getCurrentUser.rejected
+        ),
+        (state) => {
+          state.user = initialState.user;
+          state.token = initialState.token;
+          state.isLoggedIn = initialState.isLoggedIn;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          authOperations.getCurrentUser.fulfilled,
+          authOperations.register.fulfilled,
+          authOperations.logIn.fulfilled
+        ),
+        (state) => {
           state.isLoggedIn = true;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          authOperations.getCurrentUser.fulfilled,
+          authOperations.getCurrentUser.rejected
+        ),
+        (state) => {
+          state.isRefreshing = false;
         }
       );
   },
