@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from "react";
-import { Switch, useLocation } from "react-router-dom";
+import { Redirect, Switch, useLocation } from "react-router-dom";
 import AppBar from "components/AppBar/AppBar";
 import { useDispatch, useSelector } from "react-redux";
 import { authOperations, authSelectors } from "redux/auth";
@@ -94,6 +94,8 @@ const App = () => {
                   <PrivateRoute path={"/contacts"} redirectTo="/login">
                     <ContactsPage />
                   </PrivateRoute>
+
+                  <Redirect to="/" />
                 </Switch>
               </div>
             </animated.div>
